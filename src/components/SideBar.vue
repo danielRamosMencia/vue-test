@@ -27,7 +27,7 @@
                         </svg>
 
 
-                        <span class="flex-1 ms-3 whitespace-nowrap">Tu</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">{{ loggedUsser }}</span>
                     </a>
                 </li>
                 <li>
@@ -64,10 +64,16 @@
 <script setup lang="ts">
 import UsersTable from './users/UsersTable.vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth-store';
+
+const authStore = useAuthStore();
 
 const router = useRouter();
 
-const handleLogout = (): void => {
+const loggedUsser = localStorage.getItem('user');
+
+const handleLogout = async () => {
+    await authStore.logout();
     router.push('/');
 }
 </script>

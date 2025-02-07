@@ -111,7 +111,7 @@ const handleSubmit = async () => {
             await userStore.updateUser(formData, userId);
             console.log("Usuario actualizado");
         } else {
-            // Lógica para registrar
+            console.log("Request", formData);
             await userStore.registerUser(formData);
             console.log("Usuario registrado");
         }

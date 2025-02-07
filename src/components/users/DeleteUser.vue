@@ -1,7 +1,9 @@
 <template>
     <div class="flex justify-center items-center h-screen bg-gray-100">
         <div class="p-6 max-w-md bg-white rounded-lg border border-gray-200 shadow-md">
-            <h1 class="text-xl font-bold mb-4">¿Está seguro que quiere eliminar el usuario con el ID {{ userId }}?</h1>
+            <h1 class="text-xl font-bold mb-4">
+                ¿Está seguro que quiere eliminar el usuario con el ID {{ userId }}?
+            </h1>
             <div class="flex justify-end mt-4">
                 <button @click="handleDelete"
                     class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 mx-2">
@@ -17,20 +19,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user-store";
 
 const route = useRoute();
 const router = useRouter();
-const userId = ref(route.params.id);
+const userStore = useUserStore();
 
-const handleDelete = () => {
-    console.log('Usuario eliminado:', userId.value);
-    router.push('/users');
+const userId = ref(Number(route.params.id));
+
+const handleDelete = async () => {
+    try {
+        if (userId.value) {
+            await userStore.deleteUser(userId.value);
+            router.push("/users");
+        }
+    } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+    }
 };
 
 const handleCancel = () => {
-    router.push('/users');
-}
+    router.push("/users");
+};
 </script>

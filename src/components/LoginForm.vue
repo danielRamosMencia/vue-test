@@ -38,8 +38,10 @@
 import { useRouter } from 'vue-router';
 import { reactive } from 'vue';
 import { loginSchema } from '@/types/schemas/login-schema';
+import { useAuthStore } from '@/stores/auth-store';
 
 const router = useRouter();
+const authStore = useAuthStore();
 const form = reactive({
     username: "",
     password: "",
@@ -47,7 +49,7 @@ const form = reactive({
 
 const errors = reactive<Record<string, string>>({});
 
-const handleLogin = () => {
+const handleLogin = async () => {
     const result = loginSchema.safeParse(form);
 
     if (!result.success) {
@@ -58,6 +60,7 @@ const handleLogin = () => {
             errors[field] = issue.message;
         });
     } else {
+        await authStore.login(form.username, form.password);
         router.push("/users");
     }
 }

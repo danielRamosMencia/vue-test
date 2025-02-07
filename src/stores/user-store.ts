@@ -26,6 +26,7 @@ export const useUserStore = defineStore("user", {
     },
     async registerUser(user: UserInput) {
       try {
+        console.log("Request", user);
         const response = await axiosClient.post<User>("/users", user);
 
         if (response.status === 201) {
@@ -44,6 +45,18 @@ export const useUserStore = defineStore("user", {
           if (index !== -1) {
             this.usersList[index] = response.data;
           }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async deleteUser(id: number) {
+      try {
+        const response = await axiosClient.delete(`/users/${id}`);
+
+        if (response.status === 200) {
+          this.usersList = this.usersList.filter((user) => user.id !== id);
         }
       } catch (error) {
         console.error(error);
