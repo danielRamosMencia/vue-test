@@ -11,10 +11,10 @@
 
                 <div class="mb-5">
                     <label for="usuario" class="block mb-2 text-sm font-medium text-gray-900">Usuario</label>
-                    <input v-model="form.usuario" type="text" id="usuario"
+                    <input v-model="form.username" type="text" id="usuario"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Ingresa tu usuario" />
-                    <p v-if="errors.usuario" class="text-red-600 text-sm">{{ errors.usuario }}</p>
+                    <p v-if="errors.username" class="text-red-600 text-sm">{{ errors.username }}</p>
                 </div>
 
                 <div class="mb-5">
@@ -41,18 +41,18 @@ import { loginSchema } from '@/types/schemas/login-schema';
 
 const router = useRouter();
 const form = reactive({
-    usuario: '',
-    password: '',
+    username: "",
+    password: "",
 });
 
-const errors = reactive<{ [key: string]: string }>({});
+const errors = reactive<Record<string, string>>({});
 
 const handleLogin = () => {
     const result = loginSchema.safeParse(form);
 
     if (!result.success) {
-        errors.usuario = '';
-        errors.password = '';
+        errors.username = "";
+        errors.password = "";
         result.error.issues.forEach((issue) => {
             const field = issue.path[0] as string;
             errors[field] = issue.message;
