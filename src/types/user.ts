@@ -1,11 +1,12 @@
 export interface User {
-  id: number;
+  id?: number;
   username: string;
   email: string;
   msisdn: string;
-  created_at: Date;
+  createdAt?: Date;
 }
 
-export interface Users {
-  users: User[];
+export interface UsersState {
+  currentUser: User;
+  usersList: User[];
 }

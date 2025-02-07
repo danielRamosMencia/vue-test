@@ -38,11 +38,11 @@
 
             <div class="flex justify-end mt-4">
                 <button type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm w-full sm:w-auto px-5 py-2.5 text-center mr-2">
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-lg w-full sm:w-auto px-5 py-2.5 text-center mr-2">
                     Registrar
                 </button>
                 <button type="button" @click="handleCancel"
-                    class="text-white bg-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                    class="text-white bg-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm w-full text-lg sm:w-auto px-5 py-2.5 text-center">
                     Cancelar
                 </button>
             </div>
