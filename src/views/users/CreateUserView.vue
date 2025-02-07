@@ -1,0 +1,7 @@
+<template>
+    <CreateUser />
+</template>
+
+<script setup lang="ts">
+import CreateUser from '@/components/users/CreateUser.vue';
+</script>
