@@ -32,6 +32,9 @@ export const useAuthStore = defineStore("auth", {
           localStorage.setItem("user", this.user);
         }
       } catch (error) {
+        alert(
+          "Ha ocurrido un error, revise sus credenciales, o contacte con el administrador"
+        );
         console.error("Error al hacer login:", error);
         throw error;
       }

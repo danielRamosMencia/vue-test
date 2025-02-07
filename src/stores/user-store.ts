@@ -26,13 +26,13 @@ export const useUserStore = defineStore("user", {
     },
     async registerUser(user: UserInput) {
       try {
-        console.log("Request", user);
         const response = await axiosClient.post<User>("/users", user);
 
         if (response.status === 201) {
           this.usersList.push(response.data);
         }
       } catch (error) {
+        alert("Error al registrar el usuario, o usuario existente");
         console.error(error);
       }
     },
@@ -47,6 +47,7 @@ export const useUserStore = defineStore("user", {
           }
         }
       } catch (error) {
+        alert("Error al actualizar el usuario");
         console.error(error);
       }
     },
@@ -59,6 +60,7 @@ export const useUserStore = defineStore("user", {
           this.usersList = this.usersList.filter((user) => user.id !== id);
         }
       } catch (error) {
+        alert("Error al eliminar el usuario");
         console.error(error);
       }
     },

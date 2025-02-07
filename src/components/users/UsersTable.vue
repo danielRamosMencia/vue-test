@@ -52,15 +52,19 @@
                         {{ user.msisdn }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ user.createdAt }}
+                        {{ formatDate(user.createdAt) }}
                     </td>
                     <td class="px-6 py-4">
-                        <RouterLink :to="`/users/edit/${user.id}`"
-                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline pr-2">Editar
-                        </RouterLink>
-                        <RouterLink :to="`/users/delete/${user.id}`"
-                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar</RouterLink>
+                        <template v-if="user.username !== currentUser">
+                            <RouterLink :to="`/users/edit/${user.id}`"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline pr-2">Editar
+                            </RouterLink>
+                            <RouterLink :to="`/users/delete/${user.id}`"
+                                class="font-medium text-red-600 dark:text-red-500 hover:underline">Eliminar
+                            </RouterLink>
+                        </template>
                     </td>
+
                 </tr>
             </tbody>
         </table>
@@ -71,14 +75,16 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/user-store';
+import { useAuthStore } from '@/stores/auth-store';
+import { formatDate } from '@/lib/utils';
 
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const usersList = computed(() => userStore.usersList);
+const currentUser = localStorage.getItem('user');
 
 onMounted(async () => {
     await userStore.fetchUsers();
-
-    console.log("Data:", usersList.value);
 });
 </script>

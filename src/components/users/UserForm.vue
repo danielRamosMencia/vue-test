@@ -109,11 +109,8 @@ const handleSubmit = async () => {
         if (isEditMode) {
             const userId = Number(route.params.id);
             await userStore.updateUser(formData, userId);
-            console.log("Usuario actualizado");
         } else {
-            console.log("Request", formData);
             await userStore.registerUser(formData);
-            console.log("Usuario registrado");
         }
 
         router.push("/users");
