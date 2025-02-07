@@ -1,7 +1,7 @@
 <template>
-    <CreateUser />
+    <UserForm />
 </template>
 
 <script setup lang="ts">
-import CreateUser from '@/components/users/CreateUser.vue';
+import UserForm from '@/components/users/UserForm.vue';
 </script>

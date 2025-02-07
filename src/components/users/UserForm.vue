@@ -1,8 +1,10 @@
 <template>
     <div class="flex justify-center items-center h-screen">
         <form class="border border-gray-300 bg-white shadow-md rounded px-8 pt-6 pb-8 w-full md:w-3/4 lg:w-1/2"
-            @submit.prevent="handleRegister">
-            <span class="text-2xl font-bold text-center block mb-5">Registrar nuevo usuario</span>
+            @submit.prevent="handleSubmit">
+            <span class="text-2xl font-bold text-center block mb-5">
+                {{ isEditMode ? "Editar usuario" : "Registrar nuevo usuario" }}
+            </span>
 
             <div class="mb-5">
                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nombre de usuario</label>
@@ -39,7 +41,7 @@
             <div class="flex justify-end mt-4">
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-lg w-full sm:w-auto px-5 py-2.5 text-center mr-2">
-                    Registrar
+                    {{ isEditMode ? "Actualizar" : "Registrar" }}
                 </button>
                 <button type="button" @click="handleCancel"
                     class="text-white bg-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-sm w-full text-lg sm:w-auto px-5 py-2.5 text-center">
@@ -50,13 +52,18 @@
     </div>
 </template>
 
+
 <script setup lang="ts">
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, reactive } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { z } from "zod";
 import { userSchema } from "@/types/schemas/user-schema";
+import { useUserStore } from "@/stores/user-store";
 
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+
 const formData = reactive({
     username: "",
     email: "",
@@ -65,8 +72,32 @@ const formData = reactive({
 });
 
 const errors = reactive<Record<string, string>>({});
+const isEditMode = !!route.params.id;
 
-const handleRegister = () => {
+onMounted(async () => {
+    if (isEditMode) {
+        try {
+            const userId = Number(route.params.id);
+
+            const user = userStore.usersList.find((u) => u.id === userId);
+            if (!user) {
+                await userStore.fetchUsers();
+            }
+
+            const selectedUser = userStore.usersList.find((u) => u.id === userId);
+            if (selectedUser) {
+                Object.assign(formData, selectedUser);
+            } else {
+                console.error("Usuario no encontrado");
+                router.push("/users");
+            }
+        } catch (error) {
+            console.error("Error al cargar los datos del usuario", error);
+        }
+    }
+});
+
+const handleSubmit = async () => {
     errors.username = "";
     errors.email = "";
     errors.msisdn = "";
@@ -74,7 +105,17 @@ const handleRegister = () => {
 
     try {
         userSchema.parse(formData);
-        console.log("Usuario registrado");
+
+        if (isEditMode) {
+            const userId = Number(route.params.id);
+            await userStore.updateUser(formData, userId);
+            console.log("Usuario actualizado");
+        } else {
+            // Lógica para registrar
+            await userStore.registerUser(formData);
+            console.log("Usuario registrado");
+        }
+
         router.push("/users");
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -82,6 +123,8 @@ const handleRegister = () => {
                 const fieldName = issue.path[0] as string;
                 errors[fieldName] = issue.message;
             });
+        } else {
+            console.error("Error en el manejo del usuario:", error);
         }
     }
 };

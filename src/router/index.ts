@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "@/views/LoginView.vue";
-import UsersView from "@/views/users/UsersView.vue";
 import AboutView from "@/views/AboutView.vue";
+import LoginView from "@/views/LoginView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import UsersView from "@/views/users/UsersView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: "/users/edit/:id",
       name: "users-edit",
-      component: () => import("@/views/users/EditUserView.vue"), 
+      component: () => import("@/views/users/CreateUserView.vue"), 
     },
     {
       path: "/users/delete/:id",
