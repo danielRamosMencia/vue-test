@@ -3,7 +3,7 @@
 ### Clonar repositorio:
 
 ```sh
-pnpm install
+git clone https://github.com/danielRamosMencia/vue-test.git
 ```
 
 ### Acceder a la carpeta
